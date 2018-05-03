@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="poc.domain.dao.AdminSystemCategoryMapper" >
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from ADMIN_SYSTEM_CATEGORY
+    order by SORT_ORDER
+  </select>
+  
+  <resultMap id="AggregateResultMap" extends="poc.domain.dao.AdminSystemCategoryMapper.BaseResultMap" type="poc.domain.aggregate.AdminSystemCategoryAggregate">
+	<collection property="systems" ofType="poc.domain.model.AdminSystem">
+	    <id property="id" column="SYSTEM_ID"/>
+	    <result column="SYSTEM_NAME" property="name" jdbcType="VARCHAR" />
+	    <result column="SYSTEM_DESCRIPTION" property="description" jdbcType="VARCHAR" />
+	    <result column="ICON" property="icon" jdbcType="VARCHAR" />
+	    <result column="URL" property="url" jdbcType="VARCHAR" />
+	    <result column="CATEGORY_ID" property="categoryId" jdbcType="INTEGER" />
+	    <result column="SYSTEM_SORT_ORDER" property="sortOrder" jdbcType="INTEGER" />
+	</collection>
+  </resultMap>
+  
+  <select id="selectAllWithSystems" resultMap="AggregateResultMap" >
+    select sc.*,
+    	s.ID as SYSTEM_ID, s.NAME AS SYSTEM_NAME, s.DESCRIPTION as SYSTEM_DESCRIPTION, s.ICON, s.URL, s.SORT_ORDER as SYSTEM_SORT_ORDER
+    from ADMIN_SYSTEM_CATEGORY sc, ADMIN_SYSTEM s
+    where s.CATEGORY_ID=sc.ID
+    order by SORT_ORDER,SYSTEM_SORT_ORDER
+  </select>
+
+</mapper>

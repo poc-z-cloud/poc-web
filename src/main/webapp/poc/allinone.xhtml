@@ -1,0 +1,72 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/WEB-INF/includes/maintemplate.xhtml">
+	<ui:define name="main">
+ 
+        <h1>List->Details All in One Page</h1>
+        <h:outputText id="nbOrder" value=" Number of orders : #{orderBean.nbOrder}" />
+ 
+        <h:form id="addOrder">
+            <h:dataTable value="#{orderBean.orderList}" var="o"
+                         styleClass="order-table"
+                         headerClass="order-table-header"
+                         rowClasses="order-table-odd-row,order-table-even-row">
+ 
+                <h:column>
+                    <f:facet name="header">Order No</f:facet>
+                    <h:outputText value="#{o.orderNo}" rendered="#{not o.editable}" />
+                </h:column>
+ 
+                <h:column>
+                    <f:facet name="header">Product Name</f:facet>
+                    <h:outputText value="#{o.productName}" rendered="#{not o.editable}" />
+                </h:column>
+ 
+                <h:column>
+                    <f:facet name="header">Price</f:facet>
+                    <h:outputText value="#{o.price}" rendered="#{not o.editable}" />
+                </h:column>
+ 
+                <h:column>
+                    <f:facet name="header">Quantity</f:facet>
+                    <h:outputText value="#{o.qty}" rendered="#{not o.editable}" />
+                </h:column>
+ 
+                <h:column>
+                    <f:facet name="header">Edit</f:facet>
+                    <h:commandLink value="Edit" immediate="true" action="#{orderBean.editAction(o)}" rendered="#{not o.editable}" />
+                </h:column>
+ 
+                <h:column>
+                    <f:facet name="header">Delete</f:facet>
+                    <h:commandLink value="Delete" immediate="true" action="#{orderBean.deleteAction(o)}" rendered="#{not o.editable}" onclick="return confirm('Are you sure you want to delete this item?');"/>
+                </h:column>                    
+ 
+            </h:dataTable>
+ 
+            <h3>Enter Order</h3>
+            <table>
+                <tr>
+                    <td styleClass="celluleLeft">Order No :</td>
+                    <td><h:inputText id="orderNo" size="10" maxlength="10" value="#{orderBean.orderNo}" readonly="true"  /></td>
+                </tr>
+                <tr>
+                    <td styleClass="celluleLeft">Product Name :</td>
+                    <td><h:inputText id="productName" size="20" maxlength="20" value="#{orderBean.productName}" required="true" /></td>
+                </tr>
+                <tr>
+                    <td styleClass="celluleLeft">Quantity :</td>
+                    <td><h:inputText id="qty" size="5" maxlength="5" value="#{orderBean.qty}" required="true" /></td>
+                </tr>
+                <tr>
+                    <td styleClass="celluleLeft">Price :</td>
+                    <td><h:inputText id="price" size="10" maxlength="10" value="#{orderBean.price}" required="true" /></td>
+                </tr>
+            </table>
+            <h:commandButton value="Add New Order" action="#{orderBean.addAction}" rendered="#{not orderBean.editable}" />
+            <h:commandLink value="Save Changes" action="#{orderBean.saveAction}" rendered="#{orderBean.editable}" />
+ 
+        </h:form>
+		
+	</ui:define>
+</ui:composition>

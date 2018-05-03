@@ -1,0 +1,93 @@
+<!DOCTYPE generatorConfiguration
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+	<!-- targetRuntime="MyBatis3" or targetRuntime="Ibatis2Java5" -->
+	<context id="context" targetRuntime="MyBatis3"
+		defaultModelType="flat">
+		<plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin" />
+		<plugin type="org.mybatis.generator.plugins.ToStringPlugin" />
+		<plugin type="ca.on.gov.edu.codegen.mybatis.SealMyBatisGeneratorPlugIn">
+			<property name="tablePrefix" value="${paris_schema}." />
+			<property name="refTableSuffix" value="_REF" />			
+		</plugin>
+
+		<jdbcConnection driverClass="oracle.jdbc.driver.OracleDriver"
+			connectionURL="jdbc:oracle:thin:@142.108.61.47:15219:ISHDEV"
+			userId="paris" password="paris">
+		</jdbcConnection>
+
+		<javaModelGenerator
+			targetPackage="ca.on.gov.edu.paris.persistence.model"
+			targetProject="${generated.source.dir}">
+			<property name="enableSubPackages" value="false" />
+			<property name="rootClass" value="ca.on.gov.edu.paris.persistence.model.AbstractPARISAuditablePersistenceModel" />
+			<property name="trimStrings" value="false" />
+		</javaModelGenerator>
+
+		<sqlMapGenerator targetPackage="ca.on.gov.edu.paris.persistence.xml"
+			targetProject="${generated.source.dir}">
+			<property name="enableSubPackages" value="false" />
+		</sqlMapGenerator>
+
+		<!-- MyBatis3: XMLMAPPER/MIXEDMAPPER/ANNOTATEDMAPPER -->
+		<!-- Ibatis2Java5: IBATIS/GENERIC-CI/GENERIC-SI/SPRING -->
+		<javaClientGenerator type="XMLMAPPER"
+			targetPackage="ca.on.gov.edu.paris.persistence.dao"
+			implementationPackage="ca.on.gov.edu.paris.persistence.dao.impl"
+			targetProject="${generated.source.dir}">
+			<property name="enableSubPackages" value="false" />
+			<property name="methodNameCalculator" value="extended" />
+		</javaClientGenerator>
+
+		<!--  <table tableName="LOCAL_CONFIG_PARAMETER" enableSelectByExample="false" -->
+
+		<table tableName="PURCHASE_CAMPUS" enableSelectByExample="false"
+			enableDeleteByExample="false" enableCountByExample="false"
+			enableUpdateByExample="false" selectByExampleQueryId="false">			
+		</table>
+
+		
+<!--
+		<table tableName="FRANCHISE_PURCHASE_REQUEST" enableSelectByExample="false"
+			enableDeleteByExample="false" enableCountByExample="false"
+			enableUpdateByExample="false" selectByExampleQueryId="false">			
+		</table>
+
+ 
+		<table tableName="REGSTRTN_RENEWAL_QUESTION_REF" enableSelectByExample="false"
+			enableDeleteByExample="false" enableCountByExample="false"
+			enableUpdateByExample="false" selectByExampleQueryId="false">			
+		</table>
+		<table tableName="REG_RENEWAL_QUESTION_ANSWER" enableSelectByExample="false"
+			enableDeleteByExample="false" enableCountByExample="false"
+			enableUpdateByExample="false" selectByExampleQueryId="false">			
+		</table>
+		<table tableName="CAMPUS_PROGRAM_ENROLMENT" enableSelectByExample="false"
+			enableDeleteByExample="false" enableCountByExample="false"
+			enableUpdateByExample="false" selectByExampleQueryId="false">			
+		</table>
+		<table tableName="ORGANIZATION_MONTH_REVENUE" enableSelectByExample="false"
+			enableDeleteByExample="false" enableCountByExample="false"
+			enableUpdateByExample="false" selectByExampleQueryId="false">			
+		</table>
+		<table tableName="ORG_FUND_SOURCE_REVENUE" enableSelectByExample="false"
+			enableDeleteByExample="false" enableCountByExample="false"
+			enableUpdateByExample="false" selectByExampleQueryId="false">			
+		</table>
+		<table tableName="FUND_SOURCE_CATEGORY_REF" enableSelectByExample="false"
+			enableDeleteByExample="false" enableCountByExample="false"
+			enableUpdateByExample="false" selectByExampleQueryId="false">			
+		</table>
+		<table tableName="FUND_SOURCE_ITEM_REF" enableSelectByExample="false"
+			enableDeleteByExample="false" enableCountByExample="false"
+			enableUpdateByExample="false" selectByExampleQueryId="false">			
+		</table>
+		<table tableName="FUND_SOURCE_TYPE_REF" enableSelectByExample="false"
+			enableDeleteByExample="false" enableCountByExample="false"
+			enableUpdateByExample="false" selectByExampleQueryId="false">			
+		</table>					
+ -->							
+	</context>	
+	
+</generatorConfiguration>

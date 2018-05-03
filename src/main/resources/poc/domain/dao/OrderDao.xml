@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="poc.domain.dao.OrderDao">
+
+  <cache />
+
+  <select id="getOrder" parameterType="int" resultType="Order">
+    SELECT
+          *
+    FROM Orders
+    WHERE orderNo = #{orderNo}
+  </select>
+
+  <select id="getOrders" resultType="Order">
+    SELECT
+          *
+    FROM Orders
+  </select>
+
+  <delete id="deleteOrder" parameterType="int">
+    delete 
+    FROM Orders
+    WHERE orderNo = #{orderNo}
+  </delete>
+
+  <update id="updateOrder" parameterType="Order">
+    update Orders
+    set productName=#{productName},
+    	price=#{price},
+    	qty=#{qty}
+    WHERE orderNo = #{orderNo}
+  </update>
+
+  <insert id="addOrder" parameterType="Order">
+    insert into Orders(productName,price,qty)
+    values(#{productName},#{price},#{qty})
+  </insert>
+
+</mapper>

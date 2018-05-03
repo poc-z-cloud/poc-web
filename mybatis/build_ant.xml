@@ -1,0 +1,16 @@
+<project default="genfiles" basedir=".">
+       <property name="generated.source.dir" value="${basedir}/temp" />
+       <property name="locationName" value="C:/Jason/workspaces/paris/POCWeb"/>
+
+       <target name="genfiles" description="Generate the files">
+              <mkdir dir="${generated.source.dir}"/>
+              
+              <taskdef name="mbgenerator" classname="org.mybatis.generator.ant.GeneratorAntTask" classpath="${locationName}/target/classes;${locationName}/h2/h2-1.4.180.jar;${locationName}/mybatis/org.mybatis.generator.core_1.3.2.201207161521.jar;" />
+
+              <mbgenerator overwrite="true" configfile="${basedir}/generatorConfig.xml" verbose="false">
+                     <propertyset>
+                           <propertyref name="generated.source.dir" />
+                     </propertyset>
+              </mbgenerator>
+       </target>
+</project>

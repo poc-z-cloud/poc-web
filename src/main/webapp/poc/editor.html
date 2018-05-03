@@ -1,0 +1,62 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Web Editor</title>
+<script>
+function run(){
+	var html=document.getElementById("html"),
+		output=document.getElementById("output");
+
+    var ifrw = (output.contentWindow) ? output.contentWindow : (output.contentDocument.document) ? output.contentDocument.document : output.contentDocument;
+    ifrw.document.open();
+    ifrw.document.write(html.textContent);  
+    ifrw.document.close();
+}
+</script>
+<style>
+html,body,div.content,iframe{
+	border:0;
+	height:100%;
+	margin:0;
+	padding:0;
+	width:100%;
+}
+table{
+	border:0;
+	height:90%;
+	margin:0;
+	padding:0;
+	width:100%;
+}
+td{
+	border:2px solid black;
+	height:100%;
+	padding:25px 5px 5px 5px;
+	position:relative;
+	vertical-align:top;
+	width:50%;
+}
+div.tag{
+	position:absolute;
+	right:5px;
+	top:5px;
+}
+</style>
+	
+</head>
+	<body>
+	<input type="button" value="run" onclick="return run()"/>
+		<table>
+			<tr>
+				<td>
+					<div class="tag">HTML (Body)</div>
+					<div id="html" class="content" contenteditable></div>
+				</td>
+				<td>
+					<div class="tag">Output</div>
+					<iframe id="output"></iframe>
+				</td>
+			</tr>
+		</table>
+	</body>
+</html>

@@ -1,0 +1,105 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" 
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/includes/maintemplate.xhtml">
+	<ui:define name="main">        
+        <h:form id="formList">
+		<p:growl id="growl" showDetail="true" />        
+            <p:dataTable id="dtList" var="adminRole" value="#{adminRoleBean.list}" selection="#{adminRoleBean.selectedList}" rowKey="#{adminRole.id}"
+                         paginator="true"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15" rows="5"
+                         rowIndexVar="rowIndex">
+		        <f:facet name="header">
+		            User List
+		        </f:facet>
+		        <p:column selectionMode="multiple" style="width:4%;text-align:center">
+                    <h:outputText value=" #{rowIndex+1}" />
+		        </p:column>
+
+                <p:column headerText="Id">
+                    <h:outputText value="#{adminRole.id}" />
+                </p:column>
+
+                <p:column headerText="Name">
+                    <h:outputText value="#{adminRole.name}" />
+                </p:column>
+
+                <p:column headerText="Description">
+                    <h:outputText value="#{adminRole.description}" />
+                </p:column>
+
+                <p:column headerText="Sort Order">
+                    <h:outputText value="#{adminRole.sortOrder}" />
+                </p:column>
+
+		        <p:column style="width:32px;text-align: center">
+		             <p:commandButton update=":formDialog:detailPanel" oncomplete="PF('detailDialog').show()" icon="ui-icon-search" title="View">
+		                <f:setPropertyActionListener value="#{adminRole}" target="#{adminRoleBean.viewModel}" />
+		            </p:commandButton>
+		        </p:column>
+		        <f:facet name="footer">
+		            <p:commandButton process="dtList" onclick="return confirm('Are you sure?');" action="#{adminRoleBean.onDelete}" update=":formList:dtList" icon="ui-icon-close" value="Delete" />
+		            <p:commandButton process="dtList" action="#{adminRoleBean.onAdd}" update=":formDialog:detailPanel" icon="ui-icon-search" value="Add" oncomplete="PF('detailDialog').show()"/>
+		            <p:commandButton process="dtList" action="#{adminRoleBean.onSetFilter}" icon="ui-icon-search" value="Filter" oncomplete="PF('filterDialog').show()"/>
+        		</f:facet>
+            </p:dataTable>
+            
+		    
+        		    
+        </h:form>
+        
+    </ui:define>
+    
+    <ui:define name="dialog">
+    	<h:form id="formDialog">
+			<p:dialog header="User Detail" widgetVar="detailDialog" modal="true" dynamic="true" showEffect="fade" hideEffect="fade" resizable="false">
+		        <p:outputPanel id="detailPanel" style="text-align:center;">
+		            <p:panelGrid  columns="2" rendered="#{not empty adminRoleBean.viewModel}" columnClasses="label,value">
+		                <f:facet name="header">
+		                </f:facet>
+		 
+		                <h:outputText value="Id:" />
+		                <h:outputText value="#{adminRoleBean.viewModel.id}" />
+		 
+		                <h:outputText value="Name:" />
+		                <h:inputText value="#{adminRoleBean.viewModel.name}" />
+		 
+		                <h:outputText value="Description" />
+		                <h:inputText value="#{adminRoleBean.viewModel.description}" />
+		 
+		                <h:outputText value="Sort Order" />
+		                <h:inputText value="#{adminRoleBean.viewModel.sortOrder}" />
+		 
+		                <f:facet name="footer">
+			             <p:commandButton value="OK" action="#{adminRoleBean.onOK}" oncomplete="PF('detailDialog').hide()" update=":formList:dtList" partialSubmit="true">
+			            </p:commandButton>
+		                </f:facet>
+		            </p:panelGrid>
+		        </p:outputPanel>
+		    </p:dialog>        
+
+			<p:dialog header="Filter" widgetVar="filterDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+		        <p:outputPanel id="filterPanel" style="text-align:center;">
+		            <p:panelGrid  columns="2" columnClasses="label,value">
+		                <f:facet name="header">
+		                </f:facet>
+		 
+		                <h:outputText value="Name:" />
+		                <h:inputText value="#{adminRoleBean.viewModelSample.name}" />
+		 
+		                <f:facet name="footer">
+			             <p:commandButton value="OK" action="#{adminRoleBean.onFilter}" oncomplete="PF('filterDialog').hide()" update=":formList:dtList">
+			            </p:commandButton>
+		                </f:facet>
+		            </p:panelGrid>
+		        </p:outputPanel>
+		    </p:dialog>        
+
+    	</h:form>
+    </ui:define>
+    
+
+</ui:composition>

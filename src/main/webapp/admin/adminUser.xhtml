@@ -1,0 +1,121 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" 
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/includes/maintemplate.xhtml">
+	<ui:define name="main">        
+        <h:form id="formList">
+		<p:growl id="growl" showDetail="true" />        
+            <p:dataTable id="dtList" var="adminUser" value="#{adminUserBean.list}" selection="#{adminUserBean.selectedList}" rowKey="#{adminUser.id}"
+                         paginator="true"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15" rows="5"
+                         rowIndexVar="rowIndex">
+		        <f:facet name="header">
+		            User List
+		        </f:facet>
+		        <p:column selectionMode="multiple" style="width:4%;text-align:center">
+                    <h:outputText value=" #{rowIndex+1}" />
+		        </p:column>
+
+                <p:column headerText="Id">
+                    <h:outputText value="#{adminUser.id}" />
+                </p:column>
+
+                <p:column headerText="Name">
+                    <h:outputText value="#{adminUser.name}" />
+                </p:column>
+
+                <p:column headerText="Full Name">
+                    <h:outputText value="#{adminUser.fullName}" />
+                </p:column>
+
+                <p:column headerText="Forbidden">
+                    <h:outputText value="#{adminUser.forbidden}" />
+                </p:column>
+
+                <p:column headerText="Locked">
+                    <h:outputText value="#{adminUser.locked}" />
+                </p:column>
+
+		        <p:column style="width:32px;text-align: center">
+		             <p:commandButton update=":formDialog:detailPanel" oncomplete="PF('detailDialog').show()" icon="ui-icon-search" title="View">
+		                <f:setPropertyActionListener value="#{adminUser}" target="#{adminUserBean.viewModel}" />
+		            </p:commandButton>
+		        </p:column>
+		        <f:facet name="footer">
+		            <p:commandButton process="dtList" onclick="return confirm('Are you sure?');" action="#{adminUserBean.onDelete}" update=":formList:dtList" icon="ui-icon-close" value="Delete" />
+		            <p:commandButton process="dtList" action="#{adminUserBean.onAdd}" update=":formDialog:detailPanel" icon="ui-icon-search" value="Add" oncomplete="PF('detailDialog').show()"/>
+		            <p:commandButton process="dtList" action="#{adminUserBean.onSetFilter}" icon="ui-icon-search" value="Filter" oncomplete="PF('filterDialog').show()"/>
+        		</f:facet>
+            </p:dataTable>
+            
+		    
+        		    
+        </h:form>
+        
+    </ui:define>
+    
+    <ui:define name="dialog">
+    	<h:form id="formDialog">
+			<p:dialog header="User Detail" widgetVar="detailDialog" modal="true" dynamic="true" showEffect="fade" hideEffect="fade" resizable="false">
+		        <p:outputPanel id="detailPanel" style="text-align:center;">
+		            <p:panelGrid  columns="2" rendered="#{not empty adminUserBean.viewModel}" columnClasses="label,value">
+		                <f:facet name="header">
+		                </f:facet>
+		 
+		                <h:outputText value="Id:" />
+		                <h:outputText value="#{adminUserBean.viewModel.id}" />
+		 
+		                <h:outputText value="Name:" />
+		                <h:inputText value="#{adminUserBean.viewModel.name}" />
+		 
+		                <h:outputText value="Password" />
+		                <h:inputText value="#{adminUserBean.viewModel.password}" />
+		 
+		                <h:outputText value="Full Name" />
+		                <h:inputText value="#{adminUserBean.viewModel.fullName}" />
+		 
+		                <h:outputText value="User Type:" />
+		                <h:inputText value="#{adminUserBean.viewModel.userType}" />
+		 
+		                <h:outputText value="Forbbiden:" />
+	                	<h:selectBooleanCheckbox value="#{adminUserBean.viewModel.forbidden}"/>
+
+		                <h:outputText value="Locked:" />
+	                	<h:selectBooleanCheckbox value="#{adminUserBean.viewModel.locked}"/>
+
+		                <h:outputText value="Is Admin" />
+	                	<h:selectBooleanCheckbox value="#{adminUserBean.viewModel.isAdmin}"/>
+
+		                <f:facet name="footer">
+			             <p:commandButton value="OK" action="#{adminUserBean.onOK}" oncomplete="PF('detailDialog').hide()" update=":formList:dtList" partialSubmit="true">
+			            </p:commandButton>
+		                </f:facet>
+		            </p:panelGrid>
+		        </p:outputPanel>
+		    </p:dialog>        
+
+			<p:dialog header="Filter" widgetVar="filterDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+		        <p:outputPanel id="filterPanel" style="text-align:center;">
+		            <p:panelGrid  columns="2" columnClasses="label,value">
+		                <f:facet name="header">
+		                </f:facet>
+		 
+		                <h:outputText value="Name:" />
+		                <h:inputText value="#{adminUserBean.viewModelSample.name}" />
+		 
+		                <f:facet name="footer">
+			             <p:commandButton value="OK" action="#{adminUserBean.onFilter}" oncomplete="PF('filterDialog').hide()" update=":formList:dtList">
+			            </p:commandButton>
+		                </f:facet>
+		            </p:panelGrid>
+		        </p:outputPanel>
+		    </p:dialog>        
+
+    	</h:form>
+    </ui:define>
+    
+
+</ui:composition>

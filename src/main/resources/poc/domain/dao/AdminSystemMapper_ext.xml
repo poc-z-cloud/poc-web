@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="poc.domain.dao.AdminSystemMapper" >
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from ADMIN_SYSTEM
+    order by SORT_ORDER
+  </select>
+
+  <select id="selectByCategoryId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select 
+    <include refid="Base_Column_List" />
+    from ADMIN_SYSTEM
+    where CATEGORY_ID = #{categoryId,jdbcType=DECIMAL}
+    order by SORT_ORDER
+  </select>
+  <select id="retrieveGrantedSystemsByRoleId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select s.*
+    	from ADMIN_SYSTEM s, ADMIN_SYSTEM_ROLE sr
+    	where s.ID=sr.SYSTEM_ID
+    		and sr.ROLE_ID=#{roleId,jdbcType=BIGINT}
+    	order by SORT_ORDER
+  </select>
+  <select id="retrieveAvailableSystemsByRoleId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select s.*
+    	from ADMIN_SYSTEM s
+    	where s.ID not in (select SYSTEM_ID from ADMIN_SYSTEM_ROLE sr where sr.ROLE_ID=#{roleId,jdbcType=BIGINT})
+    	order by SORT_ORDER
+  </select>  
+</mapper>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="poc.domain.dao.AdminUserMapper" >
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from ADMIN_USER
+  </select>
+  <select id="retrieveGrantedUsersByRoleId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select u.*
+    	from ADMIN_USER u, ADMIN_USER_ROLE ur
+    	where u.ID=ur.USER_ID
+    		and ur.ROLE_ID=#{roleId,jdbcType=BIGINT}
+    	order by SORT_ORDER
+  </select>
+  <select id="retrieveAvailableRolesByRoleId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select u.*
+    	from ADMIN_USER u
+    	where u.ID not in (select USER_ID from ADMIN_USER_ROLE ur where ur.ROLE_ID=#{roleId,jdbcType=BIGINT})
+    	order by SORT_ORDER
+  </select>
+</mapper>

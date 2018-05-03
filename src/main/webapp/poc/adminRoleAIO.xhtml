@@ -1,0 +1,73 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/WEB-INF/includes/maintemplate.xhtml">
+	<ui:define name="main">
+ 
+        <h1>Role Management All in One Page</h1>
+        <h:outputText id="nbOrder" value=" Number of Roles : #{adminRoleAllInOneBean.numberOfRecords}" />
+ 
+        <h:form id="adminRoleForm">
+            <h:dataTable value="#{adminRoleAllInOneBean.list}" var="o"
+                         styleClass="order-table"
+                         headerClass="order-table-header"
+                         rowClasses="order-table-odd-row,order-table-even-row">
+ 
+                <h:column>
+                    <f:facet name="header">Role Id</f:facet>
+                    <h:outputText value="#{o.id}" />
+                </h:column>
+ 
+                <h:column>
+                    <f:facet name="header">Role Name</f:facet>
+                    <h:outputText value="#{o.name}" />
+                </h:column>
+ 
+                <h:column>
+                    <f:facet name="header">Description</f:facet>
+                    <h:outputText value="#{o.description}" />
+                </h:column>
+ 
+                <h:column>
+                    <f:facet name="header">Sort Order</f:facet>
+                    <h:outputText value="#{o.sortOrder}" />
+                </h:column>
+ 
+                <h:column>
+                    <f:facet name="header">Edit</f:facet>
+                    
+                    <h:commandLink value="Edit" immediate="true" action="#{adminRoleAllInOneBean.editAction(o)}" />
+                </h:column>
+ 
+                <h:column>
+                    <f:facet name="header">Delete</f:facet>
+                    <h:commandLink value="Delete" immediate="true" action="#{adminRoleAllInOneBean.deleteAction(o)}" onclick="return confirm('Are you sure you want to delete this item?');"/>
+                </h:column>                    
+ 
+            </h:dataTable>
+ 
+            <h3>Enter Role</h3>
+            <table>
+                <tr>
+                    <td styleClass="celluleLeft">Id :</td>
+                    <td><h:inputText id="id" size="10" maxlength="10" value="#{adminRoleAllInOneBean.viewModel.id}" readonly="true"  /></td>
+                </tr>
+                <tr>
+                    <td styleClass="celluleLeft">Role Name :</td>
+                    <td><h:inputText id="name" size="20" maxlength="20" value="#{adminRoleAllInOneBean.viewModel.name}" required="true" /></td>
+                </tr>
+                <tr>
+                    <td styleClass="celluleLeft">Description :</td>
+                    <td><h:inputText id="description" size="5" maxlength="5" value="#{adminRoleAllInOneBean.viewModel.description}" required="true" /></td>
+                </tr>
+                <tr>
+                    <td styleClass="celluleLeft">Sort Order :</td>
+                    <td><h:inputText id="sortOrder" size="10" maxlength="10" value="#{adminRoleAllInOneBean.viewModel.sortOrder}" required="true" /></td>
+                </tr>
+            </table>
+            <h:commandButton value="Add New Order" action="#{adminRoleAllInOneBean.addAction}" rendered="#{not adminRoleAllInOneBean.editable}" />
+            <h:commandLink value="Save Changes" action="#{adminRoleAllInOneBean.saveAction}" rendered="#{adminRoleAllInOneBean.editable}" />
+ 
+        </h:form>
+		
+	</ui:define>
+</ui:composition>

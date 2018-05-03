@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="poc.domain.dao.AdminRoleMapper" >
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from ADMIN_ROLE
+    order by SORT_ORDER
+  </select>
+  <select id="retrieveGrantedRolesBySystemId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select r.*
+    	from ADMIN_ROLE r, ADMIN_SYSTEM_ROLE sr
+    	where r.ID=sr.ROLE_ID
+    		and sr.SYSTEM_ID=#{systemId,jdbcType=BIGINT}
+    	order by SORT_ORDER
+  </select>
+  <select id="retrieveAvailableRolesBySystemId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select r.*
+    	from ADMIN_ROLE r
+    	where r.ID not in (select ROLE_ID from ADMIN_SYSTEM_ROLE sr where sr.SYSTEM_ID=#{systemId,jdbcType=BIGINT})
+    	order by SORT_ORDER
+  </select>
+  
+  <select id="retrieveGrantedRolesByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select r.*
+    	from ADMIN_ROLE r, ADMIN_USER_ROLE ur
+    	where r.ID=ur.ROLE_ID
+    		and ur.USER_ID=#{userId,jdbcType=BIGINT}
+    	order by SORT_ORDER
+  </select>
+  <select id="retrieveAvailableRolesByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select r.*
+    	from ADMIN_ROLE r
+    	where r.ID not in (select ROLE_ID from ADMIN_USER_ROLE ur where ur.USER_ID=#{userId,jdbcType=BIGINT})
+    	order by SORT_ORDER
+  </select>
+  
+  <delete id="deleteRolesByUserId" parameterType="java.lang.Long">
+    delete from ADMIN_USER_ROLE
+    where USER_ID = #{userId,jdbcType=BIGINT}
+  </delete>
+  
+  <delete id="deleteUserByRoleId" parameterType="java.lang.Long">
+    delete from ADMIN_USER_ROLE
+    where Role_ID = #{roleId,jdbcType=BIGINT}
+  </delete>
+
+  <delete id="deleteRolesBySystemId" parameterType="java.lang.Long">
+    delete from ADMIN_SYSTEM_ROLE
+    where SYSTEM_ID = #{systemId,jdbcType=BIGINT}
+  </delete>
+  
+  <delete id="deleteSystemByRoleId" parameterType="java.lang.Long">
+    delete from ADMIN_SYSTEM_ROLE
+    where Role_ID = #{roleId,jdbcType=BIGINT}
+  </delete>
+
+  <insert id="insertUserRole" parameterType="map">
+    insert into ADMIN_USER_ROLE (USER_ID, ROLE_ID)
+    values (#{userId,jdbcType=BIGINT}, #{roleId,jdbcType=BIGINT})
+  </insert>
+
+  <insert id="insertSystemRole" parameterType="map">
+    insert into ADMIN_SYSTEM_ROLE (SYSTEM_ID, ROLE_ID)
+    values (#{systemId,jdbcType=BIGINT}, #{roleId,jdbcType=BIGINT})
+  </insert>
+
+</mapper>

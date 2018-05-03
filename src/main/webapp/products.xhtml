@@ -1,0 +1,16 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/WEB-INF/includes/template.xhtml">
+	<ui:define name="htmlHead">
+		<meta name="description" content="Our Company Products Page" />
+		<title>Our Company - Products</title>
+	</ui:define>
+	<ui:define name="navigation">
+		<h:commandLink action="home" value="Home" />
+		<h:outputText styleClass="selected" value="Products" />
+		<h:commandLink action="contact-us" value="Contact Us" />
+	</ui:define>
+	<ui:define name="main">
+		<h:outputText value="Welcome to the PRODUCTS page." />
+	</ui:define>
+</ui:composition>

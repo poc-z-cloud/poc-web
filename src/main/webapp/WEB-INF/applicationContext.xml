@@ -1,0 +1,99 @@
+<?xml version="1.0"  encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+	    http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd"
+	default-autowire="byName">
+
+   <!-- in-memory database and a datasource 
+    <jdbc:embedded-database id="dataSource" type="H2">
+        <jdbc:script location="classpath:database/poc-h2-schema.sql"/>
+        <jdbc:script location="classpath:database/poc-h2-dataload.sql"/>
+    </jdbc:embedded-database>
+    -->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="org.h2.Driver"/>
+        <property name="url" value="jdbc:h2:tcp://localhost/poc"/>
+        <property name="username" value="sa"/>
+    </bean>    
+
+   <!-- Initialization for data source -->
+   <bean id="dataSourceForDictionary" 
+      class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+      <property name="driverClassName" value="org.h2.Driver"/>
+      <property name="url" value="jdbc:h2:tcp://localhost/dictionary"/>
+      <property name="username" value="sa"/>
+   </bean>
+
+   <!-- Definition for studentJDBCTemplate bean -->
+   <bean id="dictionaryDAO" 
+      class="poc.spring.mvc.rest.domain.DictionaryDAOImpl">
+      <property name="dataSource"  ref="dataSourceForDictionary" />    
+   </bean>
+	<bean class="org.springframework.beans.factory.config.CustomScopeConfigurer">
+		<property name="scopes">
+			<map>
+				<entry key="view">
+					<bean class="poc.web.ViewScope" />
+				</entry>
+				<entry key="flash">
+					<bean class="poc.web.FlashScope" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+    <!-- transaction manager, use JtaTransactionManager for global tx -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
+    <!-- enable component scanning and autowire (beware that this does not enable mapper scanning!) -->    
+	<context:annotation-config/>
+		
+	<context:component-scan base-package="poc"></context:component-scan>
+
+    <!-- enable transaction demarcation with annotations -->
+    <tx:annotation-driven />
+
+	<bean class="poc.spring.SpringApplicationContext"/>
+
+    <!-- define the SqlSessionFactory -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+		<property name="mapperLocations" value="classpath*:poc/domain/dao/*.xml" />		
+        <property name="typeAliasesPackage" value="poc.domain.model" />
+    </bean>
+
+	<bean id="baseMapper" class="org.mybatis.spring.mapper.MapperFactoryBean" abstract="true" lazy-init="true">
+ 		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+ 	</bean>	
+ 	
+ 	
+	<!-- PLEASE ORDER ALPHABETICALLY 
+	<bean id="adminSystemCategorygMapper" parent="baseMapper">
+		<property name="mapperInterface" value="poc.domain.dao.AdminSystemCategorygMapper" />		
+	</bean>
+
+	<bean id="adminSystemMapper" parent="baseMapper">
+		<property name="mapperInterface" value="poc.domain.dao.AdminSystemMapper" />		
+	</bean>
+
+	<bean id="userMapper" parent="baseMapper">
+		<property name="mapperInterface" value="poc.domain.dao.UserMapper" />		
+	</bean>
+	-->
+    <!-- scan for mappers and let them be autowired -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="poc.domain.dao" />
+    </bean>
+    
+
+</beans>	

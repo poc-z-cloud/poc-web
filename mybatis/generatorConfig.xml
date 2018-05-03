@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration >
+  <context id="context1" targetRuntime="MyBatis3" defaultModelType="flat">
+	<plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin" />
+	<plugin type="org.mybatis.generator.plugins.ToStringPlugin" />
+    <jdbcConnection driverClass="org.h2.Driver" connectionURL="jdbc:h2:tcp://localhost/poc" userId="sa" password="" />
+    
+		<javaModelGenerator
+			targetPackage="poc.domain.model"
+			targetProject="${generated.source.dir}">
+			<property name="enableSubPackages" value="false" />
+			<property name="rootClass" value="poc.domain.model.BaseModel" />
+			<property name="trimStrings" value="false" />
+		</javaModelGenerator>
+
+		<sqlMapGenerator targetPackage="poc.domain.xml"
+			targetProject="${generated.source.dir}">
+			<property name="enableSubPackages" value="false" />
+		</sqlMapGenerator>
+
+		<!-- MyBatis3: XMLMAPPER/MIXEDMAPPER/ANNOTATEDMAPPER -->
+		<!-- Ibatis2Java5: IBATIS/GENERIC-CI/GENERIC-SI/SPRING -->
+		<javaClientGenerator type="XMLMAPPER"
+			targetPackage="poc.domain.dao"
+			implementationPackage="poc.domain.dao.impl"
+			targetProject="${generated.source.dir}">
+			<property name="enableSubPackages" value="false" />
+			<property name="methodNameCalculator" value="extended" />
+		</javaClientGenerator>
+
+		<table tableName="admin_user"  enableSelectByExample="false"
+			enableDeleteByExample="false" enableCountByExample="false"
+			enableUpdateByExample="false" selectByExampleQueryId="false" >		
+			<generatedKey column="id" sqlStatement="select identity()" identity="true"/>	
+		</table>
+
+		<table tableName="admin_system_category"  enableSelectByExample="false"
+			enableDeleteByExample="false" enableCountByExample="false"
+			enableUpdateByExample="false" selectByExampleQueryId="false">			
+			<generatedKey column="id" sqlStatement="select identity()" identity="true"/>	
+		</table>
+
+		<table tableName="admin_system" enableSelectByExample="false"
+			enableDeleteByExample="false" enableCountByExample="false"
+			enableUpdateByExample="false" selectByExampleQueryId="false">			
+			<generatedKey column="id" sqlStatement="select identity()" identity="true"/>	
+		</table>
+    	 
+		<table tableName="admin_role"  enableSelectByExample="false"
+			enableDeleteByExample="false" enableCountByExample="false"
+			enableUpdateByExample="false" selectByExampleQueryId="false">			
+			<generatedKey column="id" sqlStatement="select identity()" identity="true"/>	
+		</table>
+    	 
+		<!--  
+
+		
+		
+
+		
+		-->
+
+  </context>
+</generatorConfiguration>

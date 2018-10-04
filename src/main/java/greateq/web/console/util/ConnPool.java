@@ -12,7 +12,7 @@ public class ConnPool {
 	
 	private ConnPool() throws SQLException{
 	    String    drv = "org.h2.Driver";
-	    String    url = "jdbc:h2:tcp://localhost//core";
+	    String    url = "jdbc:h2:tcp://localhost/core";
 	    String    uid = "sa";
 	    String    pwd = "";
 		
